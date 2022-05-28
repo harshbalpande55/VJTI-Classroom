@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block title %} Home {% endblock title %}
+
+
+{% block content %}
+<!-- ROW -->
+<div class="row">
+    <div class="col-12 ">
+        <div class="card bg-dark shadow p-3 mb-3 bg-white rounded">
+        <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" height="175" class="card-img" alt="...">
+        <div class="card-img-overlay">
+            <h1 class="card-title"><b>{{ classroom.name }}</b></h1>
+            <p class="card-text">{{ classroom.description }}</p>
+            <input type="text"  value="{{ classroom.classroom_code }}" id="classroom-code">
+            <button class = "btn btn-sm btn-outline-primary" onclick="copyCode()">Copy</button>
+        </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="row">
+        <div class="col-lg-3 d-none d-lg-block">
+            <div class="card border">
+                <div class="card-body">
+                    <h5>VJTI Classroom</h5>
+<!--                    <p class="card-text">Woohoo, no work due soon!</p>-->
+                    <button class = "btn btn-md btn-outline-primary" >
+                        <a class="float-right" href='https://hidden-earth-24132.herokuapp.com/174d3ac1-d46c-4bc3-a32f-f8e47e73ffe2'>Join Meeting</a>
+                    </button>
+                </div>
+            </div>
+            <div class="card border">
+                <div class="card-body">
+                    <h5>Upcoming</h5>
+                    <p class="card-text">Woohoo, no work due soon!</p>
+                    <a class="float-right" href="{% url 'classroom:todo' %}">View all</a>
+                </div>
+            </div>
+        </div>
+            <div class="col-lg-9">
+                <!-- ROW -->
+                <div class="row">
+
+                    <div class="col-12 mb-2">
+                        <div id = "clicked-post" class="card shadow-sm">
+                            <div class="card-body">
+                                <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" width="30" height="30" alt="..." class="rounded-circle mr-2 text-none">
+                                <a  class = "text-decoration-none" href="#!">Share something with your class</a>
+                            </div>
+                        </div>
+                        <!-- TEXT AREA -->
+                        <div id = "post-textarea" class="card shadow-sm d-none">
+                            <div class="card-body">
+                                <form action="{% url 'posts:create_post' classroom.pk %}" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {{ post_form.title|attr:"class:form-control"|attr:"placeholder:Title"}}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ post_form.description|attr:"class:form-control"|attr:"placeholder:Description" }}
+                                    </div>
+                                    <div class="float-left">
+                                        {{ post_form.file_field|attr:"class:form-control btn " }}
+                                    </div>
+                                    <button type = "submit" class="btn btn-sm btn-primary m-1 pl-3 pr-3 float-right">
+                                        Post
+                                    </button>
+                                    <button id = "cancel-post" class="btn btn-sm btn-outline-dark m-1 float-right">
+                                        Cancel
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- END TEXT AREA -->
+                        </div>
+                        <!-- END COL -->
+                        <!-- COL -->
+                        {% for content in contents %}
+                        <div class="col-12">
+                            <!-- CARD -->
+                            <div class="card shadow-sm mt-3">
+                                <div class="card-body">
+                                    <img src="{% static 'mainapp/img/undraw_posting_photo.svg' %}" width="35" height="35" alt="..." class="rounded-circle mr-2 mb-2 float-left">
+<!--                                    <div class="dropdown no-arrow float-right">-->
+<!--                                    <a class="btn btn-circle dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-dark"></i>-->
+<!--                                    </a>-->
+<!--                                    <div class="dropdown-menu dropdown-menu-right shadow animated&#45;&#45;fade-in" aria-labelledby="dropdownMenuLink">-->
+<!--                                        <div class="dropdown-header">Dropdown Header:</div>-->
+<!--                                        <a class="dropdown-item" href="#">Action</a>-->
+<!--                                        <a class="dropdown-item" href="#">Another action</a>-->
+<!--                                        <div class="dropdown-divider"></div>-->
+<!--                                        <a class="dropdown-item" href="#">Something else here</a>-->
+<!--                                    </div>-->
+<!--                                    </div>-->
+                                    <!-- Container -->
+                                    <div class="container">
+                                        {% if content.content_type == 'post' %}
+                                            <h4 class="text-primary">{{ content.title }}</h4>
+                                        {% else %}
+                                            <a href="{% url 'classroom:assignment_submit' content.pk %}"><h4 class="text-primary">{{ content.title }}</h4></a>
+                                        {% endif %}
+                                        <h6>Posted on {{ content.created_at }} By {{ content.created_by.username }}</h6>
+                                    </div>
+                                    <!-- End Container -->
+                                    <!-- CARD -->
+
+                                    <div class="row">
+                                        {% for resource in content.resources %}
+                                        <div class="col-6">
+                                            <div class="card mb-3 ml-2">
+                                                <div class="row no-gutters">
+                                                    <div class="col-md-4">
+                                                    <img src="data:image/png;base64,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" class="card-img img-fluid d-none d-lg-block" alt="...">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title "><a target="_blank" href="{{ resource.files.url  }}">{{ resource.filename }}...</a>
+                                                        </h5>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% if content.content_type == 'post' %}
+                                    <hr>
+
+                                        <h6 > Comments :</h6>
+                                        {% for comment in content.post_comment %}
+                                            <div class="d-flex flex-row">
+<!--                                                <img src="{{ comment.user.profile.image.url }}" width="35" height="35" alt="..." class="rounded-circle mr-2">-->
+                                                <p class='ml-2'><strong>{{ comment.user }}</strong>: {{ comment.comment_text}}</p>
+                                            </div>
+                                        {% endfor %}
+                                    <hr>
+                                        <form  action="{% url 'comments:create_comment' content.pk %}" method="post">
+                                            <div class="input-group">
+<!--                                            <img src="{{ request.user.profile.image.url }}" width="35" height="35" alt="..." class="rounded-circle ml-2 mr-2">-->
+                                                {% csrf_token %}
+                                                {{ comment_form.comment_text|attr:"class:form-control rounded-pill"|attr:"placeholder:Add a class comment" }}
+                                                <div class="input-group-append">
+                                                    <button class=" btn btn-circle" type="submit" id="button-addon2"><i class="fas fa-angle-double-right"></i></button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                {% endif %}
+                                </div>
+
+
+                            </div>
+                            <!-- END CARD -->
+                        </div>
+                        {% endfor %}
+                        <!-- END COL -->
+                    </div>
+                </div>
+                <!-- END ROW -->
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- ROW END -->
+
+{% endblock content %}

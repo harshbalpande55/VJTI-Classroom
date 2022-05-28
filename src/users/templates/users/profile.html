@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block title %} Profile {% endblock title %}
+
+{% block content %}
+
+
+<div class="row">
+    
+    <div class="col-lg-7">
+        <div class="p-3">
+            <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Update Profile!</h1>
+            </div>
+            <form class="user" method='POST' enctype='multipart/form-data'>
+                {% csrf_token %}
+                {{ user_form | crispy }}
+                {{ profile_form | crispy }}
+                <button type='submit' class="btn btn-small btn-primary btn-user btn-block">Update Profile</button>
+            </form>
+            <hr>
+            
+        </div>
+    </div>
+    <div class="col-lg-5 mt-5 p-lg-5 p-sm-3">
+        ​<picture class="d-flex justify-content-center">
+            <source srcset="..." type="image/png+jpg+jpeg">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAIcAhwMBIgACEQEDEQH/xAAcAAEAAgMBAQEAAAAAAAAAAAAAAQcFBggEAwL/xABBEAABAgMFBgIGCAUDBQAAAAABAAIDBAURITFBUQYSYXGBsQeRExQXMqHRIkJSVWKCwfAVM3Ki4aPC8SMkNYOy/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFhEBAQEAAAAAAAAAAAAAAAAAABEB/9oADAMBAAIRAxEAPwC7ziot8u6H4d079kC/PrwS3yy4qMrcu6nE8eyBf17JbphlxS4jC7unM8zogX/M6JyHTVYLana6jbLSwfVZmyI4WwpaH9KLE5N04m5VRWPGmszD3Cj0+Vkodv0XRyYzyOlgB8+ZQXrfrz4KLf8AA1XOI8VtsQ7e/iME/hMqyzsthofjXPQojWV6mwo8M+9GlCWPb+U2g+YQXbadeZS04+QWL2e2hpW0UkJukTTI8MWbzLbHwzo5uIPNZTX4lAt/yU5jkE0PkE/ZKATj3U36cgo0+ATHPmUEg9UQY/oiCDjbn2UXZ4aaqTxw01QWnn2QMzff2TK7DTVMrMsuKX29zogX9czotU8Q9sYGyNIEVgbFn5i1kpBJuJGL3fhF3UgZranEBtpsDReuXNu9oYm0u085Pl1suHeilm5CE24ed7uqDEVGfm6nOxZ2ozD5iZim18R5vPyHAXLzoiNCIiDI0Ct1DZ6pw6hSo5hRmXObi2I37LhmO2Vi6X2Q2klNqaJBqUmC0k7kWCTfCiDEHuDoQuV1u/hDtC6ibWQpaK+yTqNkCICbg/6jvO783BDXRnXmU6cgnTkExtv5lGTW+7Mpp8AnTkE7ZlBI4HmUQcuiIIxPHsl1mF3dD8NNUv666IGfHM6JoMsuKYjhkNVPfMoNc8RJ99N2JrMzCduxfVXQ2O+y530R/wDS5dAsAC6O8ZQ72e1DcuHpINvL0jVzki4IiIoiIgIHvhkRITiyIwhzHDEOF4PmiIOuaVNioUuUnW3NmIDIt34gCvVjZdyCwOwW+NiqD6T3/UIN35Qs915lGQ56ZlMxdfkE/YGiZY3ZnVBLeHmifuxEEZ9zonIXaaocvgNUz7nRAzuxzOiaXchqn7ATM65lBr/iBT31PYqsysJu/GdKuewaub9IDzC5bB3haLwcF2GQLLCLQfq6rmDxB2efs1tTNyYYRKxXGNKusudDccB/SbR0GqLjXEREUREQEEOJGIhQG70WIQyG0fWcbgPNFvng7s46s7UsnozP+zptkV5IudF+o3/d0GqC/qZKNkKbKybPdl4LIduu6AP0Xp6X5BMxdyGiedmZ1Rk10zOqZi6/smd2PZRlwzOqD9N4YaqFIxv8kQQcbj10TLC7IIf+BqnXmUDW+/Mpp8AnTkE/ZKBrfzK1nb7ZGX2to3qrnNgzkG18pGP1HZg6tOfQ4hbNzHIJ15lByPVabO0eoRZCpy7peahH6THZjIg5g5ELyLqraLZuj7Tyvq1VlWxdw2Mew7sSEeDheOSqyseCc7DiF1Eq0KNCyZNt3Hj8zRYfIItVQi31vhDtcYm6YcgB9r1n/C2Kh+CjvSCJX6o30YP8mTbeeG+4dgi1WmzWz9R2kqbJClwt55sMSK73ILftOP6YldL7J7PSezFFg02RBIZ9J8R3vRHnFx/dwsC+9Fo9NoMmySpUtCloeIY3FxzcSbyeKyOumZRKjLG7M6qb+umiZi6/sous4aoie2uqZ8chol+l+Q0S6zh3QSOfXVQpHEXogg4n4lMLLuQQ439AnXmUDX4lNDfwC8FZrNOocoZurTcKVgDAxHXk6AYk8Aqg2t8Y5qaESW2XgOlYZuM5HaDEP9LLw3rfwCC1do9qKPs1A9LV56HBc4EshA70SJZ9luJ7KnNrvFurVUxJahtNNkzaPSB1sd45j3Ol/FV7NzMxOTD5ibjxI8eIbXxIry5zupXyRYydI2grFFnHTdNqUzBjPO9EPpC4RDq8G0O5lb7TfGurwIbWVGlSc4QPfhRHQCeljgqvRFi5T44wdy1uz0b0mhm2gee7+iwtV8Z67NMLKdIykhb9cuMZw5WgD4KtEQj3zVbq05URUZmpzj51ptZH9O4OZwbYfojgLArF2T8Y5yU3JbaaB63BAsE3BFkRv9TcHcxYeBVVog6yotbpldlPWaTOwZqDbY8w3fSadHDFp4FZHPjpouRqZUp6kzbZumTcWVmG4RITrDyIwI4G5Wzsl4yNO5K7VS5aTYPXZdtoP9bMubbeQRlcHbumfHLgvPT56VqUqybp8zCmYEQfQiQnBzfgvRlw7oJbwwRBjfiiCDj3K0PxQ27dspLQZOnsY+pzLS5u+LWwWYbxGZJwHA2rfDkfILnLxmiPf4gToe60MgwWNvwG7b3JRcapVKnPVeddOVSbizUw768V1tg0AwA4CxeRERRERAREQEREBERAREQZGhV2qbPzXrVHnIktEPvNF7Ig/E03Huuh/DrbCHtfSXR3Q2wZ6XcGTMJvugkWhzfwm/yK5nVn+AT3DaSpwwTuvkgXDUteLO5RNXqL+XdQpGPHsiIdea5w8ZGlviDP7zSN6HBcOI3AP0K6POP6LSvEHw/ldsBCmYcx6pUYDdxkfd3mvb9lwuJsOBytOqDnBFZ3sTruVUpx5h/yT2KVz7zptmv/AFPkjVViis72J137zp39/wAk9ilc+86b/f8AJCqxRWd7FK7aB/E6b/f8k9ilc+86b/f8kKrFFZ/sTrv3nTbfz/JR7FK5j/E6bZ/7PkhVYorO9idd+86b/qfJPYpXPvOm8P5l/wAEKrFFZ3sTrv3nTf8AU+SexSuWf+TpvD+Zf8EKrFWd4BNJ2nqLgLQ2RvOQtePkVLfBOtlwBqtOaM7GvNnwVn7DbGyWx9PiQZeI6YmI5Do8w8WF5GAAyaNERso4Yd0UjHiiIEfFLP8ACIgWY/EpZhdyChEE2ZJ+woRA3css1NmahECzyzU2eaIgbuWSWZ5oiBZb+8UsPVQiCbPLulh6oiAB5IiIP//Z" class="img-fluid img-thumbnail rounded-circle" alt="...">
+        </picture>
+    </div>
+</div>
+
+{% endblock content %}
